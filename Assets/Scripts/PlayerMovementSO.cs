@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerMovementSO", menuName = "chicken_revolution/PlayerMovementSO", order = 0)]
-public class PlayerMovementSO : ScriptableObject {
+public class PlayerMovementSO : ScriptableObject 
+{
     
     [Header("PARAMETROS DO PULO")]
     public float groundedBufferTime;

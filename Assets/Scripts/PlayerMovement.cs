@@ -86,14 +86,14 @@ public class PlayerMovement : MonoBehaviour
         if(isGrounded){
             playerAnimator.SetBool("isWalking",direction.magnitude!=0);
             playerAnimator.SetBool("isFlying",false);
-            playerAnimator.SetBool("isEating",false);
+            // playerAnimator.SetBool("isEating",false);
             isGliding = false;
             if(Input.GetMouseButtonDown(0)){
                 playerAnimator.SetBool("isWalking",false);
                 playerAnimator.SetBool("isFlying",false);
                 verticalSpeed=0;
                 planeMove = Vector3.zero;
-                playerAnimator.SetBool("isEating",true);
+                // playerAnimator.SetBool("isEating",true);
                 playerAnimator.SetTrigger("eat");
             }
             if(Input.GetKeyDown(KeyCode.Space)){
@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
             else{
                 isGliding = false;
             }
-            playerAnimator.SetBool("isEating",false);
+            // playerAnimator.SetBool("isEating",false);
             playerAnimator.SetBool("isWalking",false);
             playerAnimator.SetBool("isFlying",true);
         }
