@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CompositeBehaviorSO", menuName = "chicken_revolution/Flock/CompositeBehaviorSO", order = 0)]
+[CreateAssetMenu(fileName = "CompositeBehaviorSO", menuName = "chicken_revolution/Flock/Behaviors/CompositeBehaviorSO", order = 0)]
 public class CompositeBehaviorSO : FlockBehaviorSO
 {
     public FlockBehaviorSO[] behaviors;

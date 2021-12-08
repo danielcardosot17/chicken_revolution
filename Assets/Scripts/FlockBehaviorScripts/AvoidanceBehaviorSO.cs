@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AvoidanceBehaviorSO", menuName = "chicken_revolution/Flock/AvoidanceBehaviorSO", order = 0)]
-public class AvoidanceBehaviorSO : FlockBehaviorSO 
+[CreateAssetMenu(fileName = "AvoidanceBehaviorSO", menuName = "chicken_revolution/Flock/Behaviors/AvoidanceBehaviorSO", order = 0)]
+public class AvoidanceBehaviorSO : FilteredFlockBehaviorSO 
 {
     public override Vector3 CalculateMove(FlockAgent agent, List<Transform> context, Flock flock)
     {
@@ -13,8 +13,10 @@ public class AvoidanceBehaviorSO : FlockBehaviorSO
         // Add all points together and average
         Vector3 avoidanceMove = Vector3.zero;
         int nAvoid = 0;
+        
+        List<Transform> filteredContext = (filter == null) ? context : filter.Filter(agent,context);
 
-        foreach(Transform item in context)
+        foreach(Transform item in filteredContext)
         {
             if(Vector3.SqrMagnitude(item.position - agent.transform.position) < flock.SquareAvoidanceRadius)
             {
