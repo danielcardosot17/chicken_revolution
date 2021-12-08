@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3890abbad39cc94ba6e5308022b9748, type: 3}
+  m_Name: PlayerMovementSO
+  m_EditorClassIdentifier: 
+  groundedBufferTime: 0.3
+  planeSpeed: 5
+  turboSpeed: 15
+  turboBufferTime: 10
+  rotationSpeed: 0.3
+  jumpHeight: 2
+  gravity: 10
+  glideFactor: 0.3
