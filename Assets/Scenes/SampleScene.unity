@@ -132,8 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 389235602}
-  - component: {fileID: 389235601}
   - component: {fileID: 389235603}
+  - component: {fileID: 389235601}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -153,16 +153,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59a67b8ff22d4fd499af925f636a1b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boidAmount: 1000
-  sharedMesh: {fileID: 4300000, guid: 0d79862764ef78b4e92bc7d0d37a4ce3, type: 3}
+  boidAmount: 200
+  sharedMesh: {fileID: 3613567641014311022, guid: c1c9aa90e1fc12c4cb8ffb3964f8ed16, type: 3}
   sharedMaterial: {fileID: 2100000, guid: 0b0daa9f7ce5ed54f9dbdbbd39ab0d4d, type: 2}
   boidSpeed: 10
   boidPerceptionRadius: 10
-  cageSize: 50
+  cageSize: 10
   separationWeight: 1
-  cohesionWeight: 4
-  alignmentWeight: 1
-  avoidWallsWeight: 10
+  cohesionWeight: 1
+  alignmentWeight: 100
+  avoidWallsWeight: 100
   avoidWallsTurnDist: 1
 --- !u!4 &389235602
 Transform:
@@ -338,7 +338,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 70
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -363,13 +363,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.000000020489095, y: -0.000000029802319, z: 0.000000014901159, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -56.436287}
+  m_LocalRotation: {x: 0.07547913, y: -0.4980974, z: 0.043577895, w: 0.86272997}
+  m_LocalPosition: {x: 50, y: 7.5, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10, y: -60, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,7 +418,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh21318
+  m_Name: pb_Mesh-1258
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
