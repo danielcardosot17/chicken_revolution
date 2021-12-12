@@ -153,16 +153,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59a67b8ff22d4fd499af925f636a1b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boidAmount: 200
+  boidAmount: 1000
   sharedMesh: {fileID: 3613567641014311022, guid: c1c9aa90e1fc12c4cb8ffb3964f8ed16, type: 3}
   sharedMaterial: {fileID: 2100000, guid: 0b0daa9f7ce5ed54f9dbdbbd39ab0d4d, type: 2}
   boidSpeed: 10
-  boidPerceptionRadius: 10
-  cageSize: 10
-  separationWeight: 1
-  cohesionWeight: 1
-  alignmentWeight: 100
-  avoidWallsWeight: 100
+  boidPerceptionRadius: 50
+  cageSize: 50
+  separationWeight: 25
+  cohesionWeight: 5
+  alignmentWeight: 15
+  avoidWallsWeight: 10
   avoidWallsTurnDist: 1
 --- !u!4 &389235602
 Transform:
