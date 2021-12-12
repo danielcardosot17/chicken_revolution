@@ -45,70 +45,154 @@ public class BoidSystemCalango : SystemBase
             float cohesionWeight = controller.cohesionWeight;
             float alignmentWeight = controller.alignmentWeight;
             float cageSize = controller.cageSize;
+            float cageCenterPositionX = controller.cageCenterObject.position.x;
+            float cageCenterPositionY = controller.cageCenterObject.position.y;
+            float cageCenterPositionZ = controller.cageCenterObject.position.z;
             float avoidWallsTurnDist = controller.avoidWallsTurnDist;
             float avoidWallsWeight = controller.avoidWallsWeight;
             float boidSpeed = controller.boidSpeed;
             float deltaTime = Time.DeltaTime;
 
+
             Entities
                 .WithAll<BoidSharedData>()
                 .WithDisposeOnCompletion(boidArray)
                 .ForEach((Entity boid, int entityInQueryIndex, in LocalToWorld localToWorld ) => {
-                float3 boidPosition = localToWorld.Position;
-                float3 seperationSum = float3.zero;
-                float3 positionSum = float3.zero;
-                float3 headingSum = float3.zero;
+                    float3 boidPosition = localToWorld.Position;
+                    float3 seperationSum = float3.zero;
+                    float3 positionSum = float3.zero;
+                    float3 headingSum = float3.zero;
+                    float3 cageCenterPosition = new float3(cageCenterPositionX,cageCenterPositionY,cageCenterPositionZ);
 
-                int boidsNearby = 0;
+                    int boidsNearby = 0;
 
-                for (int otherBoidIndex = 0; otherBoidIndex < boidArray.Length; otherBoidIndex++) {
-                    if (boid != boidArray[otherBoidIndex].entity) {
-                        
-                        float3 otherPosition = boidArray[otherBoidIndex].localToWorld.Position;
-                        float distToOtherBoid = math.length(boidPosition - otherPosition);
+                    for (int otherBoidIndex = 0; otherBoidIndex < boidArray.Length; otherBoidIndex++) {
+                        if (boid != boidArray[otherBoidIndex].entity) {
+                            
+                            float3 otherPosition = boidArray[otherBoidIndex].localToWorld.Position;
+                            float distToOtherBoid = math.length(boidPosition - otherPosition);
 
-                        if (distToOtherBoid < boidPerceptionRadius) {
+                            if (distToOtherBoid < boidPerceptionRadius) {
+                                // AvoidanceBehavior
+                                seperationSum += -(otherPosition - boidPosition) * (1f / math.max(distToOtherBoid, .0001f));
+                                //  CohesionBehavior
+                                positionSum += otherPosition;
+                                // AligmentBehavior
+                                headingSum += boidArray[otherBoidIndex].localToWorld.Forward;
 
-                            seperationSum += -(otherPosition - boidPosition) * (1f / math.max(distToOtherBoid, .0001f));
-                            positionSum += otherPosition;
-                            headingSum += boidArray[otherBoidIndex].localToWorld.Forward;
-
-                            boidsNearby++;
+                                boidsNearby++;
+                            }
                         }
                     }
-                }
 
-                float3 force = float3.zero;
+                    float3 force = float3.zero;
+                    // partialMove from Behavior GameObject algorithm approach ->
+                    float3 partialMove = float3.zero;
+                    float partialMoveSqrMagnitude = 0;
 
-                if (boidsNearby > 0) {
-                    force += (seperationSum / boidsNearby)                * separationWeight;
-                    force += ((positionSum / boidsNearby) - boidPosition) * cohesionWeight;
-                    force += (headingSum / boidsNearby)                   * alignmentWeight;
-                }
-                if (math.min(math.min(
-                    (cageSize / 2f) - math.abs(boidPosition.x),
-                    (cageSize / 2f) - math.abs(boidPosition.y)),
-                    (cageSize / 2f) - math.abs(boidPosition.z))
-                        < avoidWallsTurnDist) {
-                    force += -math.normalize(boidPosition) * avoidWallsWeight;
-                }
+                    if (boidsNearby > 0) {
+                        // same checks of Behavior GameObject algorithm approach: CompositeBehavior
+                        // first for Avoidance (separation)
+                        partialMove = (seperationSum / boidsNearby) * separationWeight;
+                        partialMoveSqrMagnitude = 
+                            partialMove.x * partialMove.x +
+                            partialMove.y * partialMove.y +
+                            partialMove.z * partialMove.z;
+                        
+                        if(partialMoveSqrMagnitude > 0){
+                            if(partialMoveSqrMagnitude > separationWeight * separationWeight)
+                            {
+                                partialMove = math.normalize(partialMove) * separationWeight;
+                            }
+                            force += partialMove;
+                        }
+                        partialMove = float3.zero;
+                        partialMoveSqrMagnitude = 0;
 
-                float3 velocity = localToWorld.Forward * boidSpeed;
-                velocity += force * deltaTime;
-                velocity = math.normalize(velocity) * boidSpeed;
+                        // Second for Cohesion (positionSum)
+                        partialMove = ((positionSum / boidsNearby) - boidPosition) * cohesionWeight;
+                        partialMoveSqrMagnitude = 
+                            partialMove.x * partialMove.x +
+                            partialMove.y * partialMove.y +
+                            partialMove.z * partialMove.z;
+                        
+                        if(partialMoveSqrMagnitude > 0){
+                            if(partialMoveSqrMagnitude > cohesionWeight * cohesionWeight)
+                            {
+                                partialMove = math.normalize(partialMove) * cohesionWeight;
+                            }
+                            force += partialMove;
+                        }
+                        partialMove = float3.zero;
+                        partialMoveSqrMagnitude = 0;
 
-                newBoidTransforms[entityInQueryIndex] = float4x4.TRS(
-                    localToWorld.Position + velocity * deltaTime,
-                    quaternion.LookRotationSafe(velocity, localToWorld.Up),
-                    new float3(1f)
-                );
+                        // Third for Aligment (headingSum)
+                        partialMove = (headingSum / boidsNearby) * alignmentWeight;
+                        partialMoveSqrMagnitude = 
+                            partialMove.x * partialMove.x +
+                            partialMove.y * partialMove.y +
+                            partialMove.z * partialMove.z;
+                        
+                        if(partialMoveSqrMagnitude > 0){
+                            if(partialMoveSqrMagnitude > alignmentWeight * alignmentWeight)
+                            {
+                                partialMove = math.normalize(partialMove) * alignmentWeight;
+                            }
+                            force += partialMove;
+                        }
+                        partialMove = float3.zero;
+                        partialMoveSqrMagnitude = 0;
+
+                        
+                        // force += (seperationSum / boidsNearby) * separationWeight;
+                        // force += ((positionSum / boidsNearby) - boidPosition) * cohesionWeight;
+                        // force += (headingSum / boidsNearby) * alignmentWeight;
+                    }
+
+                    // Here is "Stay in cage. I will try to change to StayInRadiusBehavior
+                    // maybe just a cage offset float3
+                    // if (math.min(math.min(
+                    //     (cageSize / 2f) - math.abs(boidPosition.x),
+                    //     (cageSize / 2f) - math.abs(boidPosition.y)),
+                    //     (cageSize / 2f) - math.abs(boidPosition.z))
+                    //         < avoidWallsTurnDist) {
+                    //     force += -math.normalize(boidPosition) * avoidWallsWeight;
+                    // }
+                    if (math.min(math.min(
+                        (cageSize / 2f) - math.abs(boidPosition.x - cageCenterPositionX),
+                        (cageSize / 2f) - math.abs(boidPosition.y - cageCenterPositionY)),
+                        (cageSize / 2f) - math.abs(boidPosition.z - cageCenterPositionZ))
+                            < avoidWallsTurnDist) {
+                        force += -math.normalize(boidPosition - cageCenterPosition) * avoidWallsWeight;
+                    }
+
+                    // here will try to adapt to "Flock" code: maxSpeed limit
+                    // float forceSqrMagnitude = 
+                    //     force.x * force.x +
+                    //     force.y * force.y +
+                    //     force.z * force.z;
+                    // if( forceSqrMagnitude > boidSpeed * boidSpeed)
+                    // {
+                    //     force = math.normalize(force) * boidSpeed;
+                    // }
+
+                    // This below is ok!
+                    float3 velocity = localToWorld.Forward * boidSpeed;
+                    velocity += force * deltaTime;
+                    velocity = math.normalize(velocity) * boidSpeed;
+
+                    newBoidTransforms[entityInQueryIndex] = float4x4.TRS(
+                        localToWorld.Position + velocity * deltaTime,
+                        quaternion.LookRotationSafe(velocity, localToWorld.Up),
+                        new float3(1f)
+                    );
             }).Schedule();
             
             Entities
                 .WithDisposeOnCompletion(newBoidTransforms)
                 .WithAll<BoidSharedData>()
                 .ForEach((int entityInQueryIndex, ref LocalToWorld localToWorld ) => {
-                localToWorld.Value = newBoidTransforms[entityInQueryIndex];
+                    localToWorld.Value = newBoidTransforms[entityInQueryIndex];
             }).Schedule();
         }
     }

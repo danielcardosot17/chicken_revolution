@@ -19,6 +19,7 @@ public class BoidController : MonoBehaviour
     public float boidSpeed;
     public float boidPerceptionRadius;
     public float cageSize;
+    public Transform cageCenterObject;
 
     public float separationWeight;
     public float cohesionWeight;
@@ -67,9 +68,9 @@ public class BoidController : MonoBehaviour
 
     private float3 RandomPosition() {
         return new float3(
-            UnityEngine.Random.Range(-cageSize / 2f, cageSize / 2f),
-            UnityEngine.Random.Range(-cageSize / 2f, cageSize / 2f),
-            UnityEngine.Random.Range(-cageSize / 2f, cageSize / 2f)
+            UnityEngine.Random.Range(cageCenterObject.position.x - cageSize / 2f, cageCenterObject.position.x + cageSize / 2f),
+            UnityEngine.Random.Range(cageCenterObject.position.y - cageSize / 2f, cageCenterObject.position.y + cageSize / 2f),
+            UnityEngine.Random.Range(cageCenterObject.position.z - cageSize / 2f, cageCenterObject.position.z + cageSize / 2f)
         );
     }
     private quaternion RandomRotation() {
@@ -84,7 +85,7 @@ public class BoidController : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(
-            Vector3.zero,
+            cageCenterObject.position,
             new Vector3(
                 cageSize,
                 cageSize,

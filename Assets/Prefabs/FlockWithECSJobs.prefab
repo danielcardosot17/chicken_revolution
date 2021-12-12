@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7077205873168032989
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7077205873168032991}
+  - component: {fileID: 7077205873168032990}
+  - component: {fileID: 7077205873168032988}
+  m_Layer: 0
+  m_Name: FlockWithECSJobs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7077205873168032991
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7077205873168032989}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7077205873168032990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7077205873168032989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 221860330e8df8344bcda0954a27b5ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  refreshTime: 0.5
+--- !u!114 &7077205873168032988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7077205873168032989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a67b8ff22d4fd499af925f636a1b09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boidAmount: 200
+  sharedMesh: {fileID: 3613567641014311022, guid: c1c9aa90e1fc12c4cb8ffb3964f8ed16, type: 3}
+  sharedMaterial: {fileID: 2100000, guid: 0b0daa9f7ce5ed54f9dbdbbd39ab0d4d, type: 2}
+  boidSpeed: 10
+  boidPerceptionRadius: 50
+  cageSize: 50
+  separationWeight: 25
+  cohesionWeight: 5
+  alignmentWeight: 15
+  avoidWallsWeight: 10
+  avoidWallsTurnDist: 1
