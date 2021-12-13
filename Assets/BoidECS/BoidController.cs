@@ -95,6 +95,14 @@ public class BoidController : MonoBehaviour
     }
     
     private quaternion RandomRotation() {
+        if(planeMovementOnly)
+        {
+            return quaternion.Euler(
+                0,
+                UnityEngine.Random.Range(-360f, 360f),
+                0
+            );
+        }
         return quaternion.Euler(
             UnityEngine.Random.Range(-360f, 360f),
             UnityEngine.Random.Range(-360f, 360f),
