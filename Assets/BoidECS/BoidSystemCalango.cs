@@ -57,6 +57,10 @@ public class BoidSystemCalango : SystemBase
             float avoidWallsWeight = controller.avoidWallsWeight;
             float boidSpeed = controller.boidSpeed;
             float deltaTime = Time.DeltaTime;
+            
+            // avoidance adjust
+            float squareNeigborRadius = boidPerceptionRadius * boidPerceptionRadius;
+            float squareAvoidanceRadius = squareNeigborRadius * controller.avoidanceRadiusMultiplier * controller.avoidanceRadiusMultiplier;
 
 
             Entities
@@ -70,6 +74,8 @@ public class BoidSystemCalango : SystemBase
                     float3 cageCenterPosition = new float3(cageCenterPositionX,cageCenterPositionY,cageCenterPositionZ);
 
                     int boidsNearby = 0;
+                    // Avodance adjust
+                    int nAvoid = 0;
 
                     for (int otherBoidIndex = 0; otherBoidIndex < boidArray.Length; otherBoidIndex++) {
                         if (boid != boidArray[otherBoidIndex].entity) {
@@ -79,7 +85,12 @@ public class BoidSystemCalango : SystemBase
 
                             if (distToOtherBoid < boidPerceptionRadius) {
                                 // AvoidanceBehavior
-                                seperationSum += -(otherPosition - boidPosition) * (1f / math.max(distToOtherBoid, .0001f));
+                                if( distToOtherBoid * distToOtherBoid < squareAvoidanceRadius)
+                                {
+                                    nAvoid++;
+                                    // seperationSum += (boidPosition - otherPosition) * (1f / math.max(distToOtherBoid, .0001f));
+                                    seperationSum += (boidPosition - otherPosition) * (squareAvoidanceRadius / math.max((distToOtherBoid * distToOtherBoid), .0001f));
+                                }
                                 //  CohesionBehavior
                                 positionSum += otherPosition;
                                 // AligmentBehavior
@@ -98,21 +109,24 @@ public class BoidSystemCalango : SystemBase
                     if (boidsNearby > 0) {
                         // same checks of Behavior GameObject algorithm approach: CompositeBehavior
                         // first for Avoidance (separation)
-                        partialMove = (seperationSum / boidsNearby) * separationWeight;
-                        partialMoveSqrMagnitude = 
-                            partialMove.x * partialMove.x +
-                            partialMove.y * partialMove.y +
-                            partialMove.z * partialMove.z;
-                        
-                        if(partialMoveSqrMagnitude > 0){
-                            if(partialMoveSqrMagnitude > separationWeight * separationWeight)
-                            {
-                                partialMove = math.normalize(partialMove) * separationWeight;
+                        if(nAvoid > 0)
+                        {
+                            partialMove = (seperationSum / nAvoid) * separationWeight;
+                            partialMoveSqrMagnitude = 
+                                partialMove.x * partialMove.x +
+                                partialMove.y * partialMove.y +
+                                partialMove.z * partialMove.z;
+                            
+                            if(partialMoveSqrMagnitude > 0){
+                                if(partialMoveSqrMagnitude > separationWeight * separationWeight)
+                                {
+                                    partialMove = math.normalize(partialMove) * separationWeight;
+                                }
+                                force += partialMove;
                             }
-                            force += partialMove;
+                            partialMove = float3.zero;
+                            partialMoveSqrMagnitude = 0;
                         }
-                        partialMove = float3.zero;
-                        partialMoveSqrMagnitude = 0;
 
                         // Second for Cohesion (positionSum)
                         partialMove = ((positionSum / boidsNearby) - boidPosition) * cohesionWeight;

@@ -20,6 +20,9 @@ public class BoidController : MonoBehaviour
 
     public float boidSpeed;
     public float boidPerceptionRadius;
+    
+    [Range(0f, 1f)]
+    public float avoidanceRadiusMultiplier = 0.8f;
     // public float cageSize;
     public float cageX;
     public float cageY;

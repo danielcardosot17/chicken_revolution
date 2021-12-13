@@ -820,11 +820,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3966208550558647284, guid: d47283c59dd13e94db04ea747ff8ecdf, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000001700846
+      value: 0.00000001700846
       objectReference: {fileID: 0}
     - target: {fileID: 3966208550558647284, guid: d47283c59dd13e94db04ea747ff8ecdf, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000002602282
+      value: 0.000000002602282
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d47283c59dd13e94db04ea747ff8ecdf, type: 3}
@@ -948,7 +948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7077205873168032988, guid: 4d5c04fde78438b4c90354d0361e1cc6, type: 3}
       propertyPath: avoidWallsWeight
-      value: 50
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7077205873168032988, guid: 4d5c04fde78438b4c90354d0361e1cc6, type: 3}
       propertyPath: cageCenterObject
@@ -956,7 +956,7 @@ PrefabInstance:
       objectReference: {fileID: 680224740}
     - target: {fileID: 7077205873168032988, guid: 4d5c04fde78438b4c90354d0361e1cc6, type: 3}
       propertyPath: separationWeight
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7077205873168032988, guid: 4d5c04fde78438b4c90354d0361e1cc6, type: 3}
       propertyPath: planeMovementOnly
@@ -965,6 +965,10 @@ PrefabInstance:
     - target: {fileID: 7077205873168032988, guid: 4d5c04fde78438b4c90354d0361e1cc6, type: 3}
       propertyPath: avoidWallsTurnDist
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7077205873168032988, guid: 4d5c04fde78438b4c90354d0361e1cc6, type: 3}
+      propertyPath: boidPerceptionRadius
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7077205873168032989, guid: 4d5c04fde78438b4c90354d0361e1cc6, type: 3}
       propertyPath: m_Name
