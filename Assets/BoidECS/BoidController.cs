@@ -62,6 +62,10 @@ public class BoidController : MonoBehaviour
                 mesh = sharedMesh,
                 material = sharedMaterial,
             });
+            
+            entityManager.SetComponentData(boidArray[i], new RenderBounds {
+                Value = sharedMesh.bounds.ToAABB()
+            });
             entityManager.SetComponentData(boidArray[i], new BoidIdData {
                 boidIndex = i,
                 boidsNearby = 0,
