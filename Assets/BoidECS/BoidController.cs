@@ -16,9 +16,14 @@ public class BoidController : MonoBehaviour
     [SerializeField] private Mesh sharedMesh;
     [SerializeField] private Material sharedMaterial;
 
+    public bool planeMovementOnly = false;
+
     public float boidSpeed;
     public float boidPerceptionRadius;
-    public float cageSize;
+    // public float cageSize;
+    public float cageX;
+    public float cageY;
+    public float cageZ;
     public Transform cageCenterObject;
 
     public float separationWeight;
@@ -66,13 +71,29 @@ public class BoidController : MonoBehaviour
         boidArray.Dispose();
     }
 
+    // private float3 RandomPosition() {
+    //     return new float3(
+    //         UnityEngine.Random.Range(cageCenterObject.position.x - cageSize / 2f, cageCenterObject.position.x + cageSize / 2f),
+    //         UnityEngine.Random.Range(cageCenterObject.position.y - cageSize / 2f, cageCenterObject.position.y + cageSize / 2f),
+    //         UnityEngine.Random.Range(cageCenterObject.position.z - cageSize / 2f, cageCenterObject.position.z + cageSize / 2f)
+    //     );
+    // }
     private float3 RandomPosition() {
+        if(planeMovementOnly)
+        {
+            return new float3(
+                UnityEngine.Random.Range(cageCenterObject.position.x - cageX / 2f, cageCenterObject.position.x + cageX / 2f),
+                0,
+                UnityEngine.Random.Range(cageCenterObject.position.z - cageZ / 2f, cageCenterObject.position.z + cageZ / 2f)
+            );
+        }
         return new float3(
-            UnityEngine.Random.Range(cageCenterObject.position.x - cageSize / 2f, cageCenterObject.position.x + cageSize / 2f),
-            UnityEngine.Random.Range(cageCenterObject.position.y - cageSize / 2f, cageCenterObject.position.y + cageSize / 2f),
-            UnityEngine.Random.Range(cageCenterObject.position.z - cageSize / 2f, cageCenterObject.position.z + cageSize / 2f)
+            UnityEngine.Random.Range(cageCenterObject.position.x - cageX / 2f, cageCenterObject.position.x + cageX / 2f),
+            UnityEngine.Random.Range(cageCenterObject.position.y - cageY / 2f, cageCenterObject.position.y + cageY / 2f),
+            UnityEngine.Random.Range(cageCenterObject.position.z - cageZ / 2f, cageCenterObject.position.z + cageZ / 2f)
         );
     }
+    
     private quaternion RandomRotation() {
         return quaternion.Euler(
             UnityEngine.Random.Range(-360f, 360f),
@@ -87,9 +108,9 @@ public class BoidController : MonoBehaviour
         Gizmos.DrawWireCube(
             cageCenterObject.position,
             new Vector3(
-                cageSize,
-                cageSize,
-                cageSize
+                cageX,
+                cageY,
+                cageZ
             )
         );
     }

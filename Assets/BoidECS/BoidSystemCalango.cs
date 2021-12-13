@@ -39,12 +39,17 @@ public class BoidSystemCalango : SystemBase
 
             entityArray.Dispose();
             localToWorldArray.Dispose();
-            
+
+
+            bool planeMovementOnly = controller.planeMovementOnly;
             float boidPerceptionRadius = controller.boidPerceptionRadius;
             float separationWeight = controller.separationWeight;
             float cohesionWeight = controller.cohesionWeight;
             float alignmentWeight = controller.alignmentWeight;
-            float cageSize = controller.cageSize;
+            // float cageSize = controller.cageSize;
+            float cageX = controller.cageX;
+            float cageY = controller.cageY;
+            float cageZ = controller.cageZ;
             float cageCenterPositionX = controller.cageCenterObject.position.x;
             float cageCenterPositionY = controller.cageCenterObject.position.y;
             float cageCenterPositionZ = controller.cageCenterObject.position.z;
@@ -159,9 +164,9 @@ public class BoidSystemCalango : SystemBase
                     //     force += -math.normalize(boidPosition) * avoidWallsWeight;
                     // }
                     if (math.min(math.min(
-                        (cageSize / 2f) - math.abs(boidPosition.x - cageCenterPositionX),
-                        (cageSize / 2f) - math.abs(boidPosition.y - cageCenterPositionY)),
-                        (cageSize / 2f) - math.abs(boidPosition.z - cageCenterPositionZ))
+                        (cageX / 2f) - math.abs(boidPosition.x - cageCenterPositionX),
+                        (cageY / 2f) - math.abs(boidPosition.y - cageCenterPositionY)),
+                        (cageZ / 2f) - math.abs(boidPosition.z - cageCenterPositionZ))
                             < avoidWallsTurnDist) {
                         force += -math.normalize(boidPosition - cageCenterPosition) * avoidWallsWeight;
                     }
@@ -180,6 +185,10 @@ public class BoidSystemCalango : SystemBase
                     float3 velocity = localToWorld.Forward * boidSpeed;
                     velocity += force * deltaTime;
                     velocity = math.normalize(velocity) * boidSpeed;
+                    if(planeMovementOnly)
+                    {
+                        velocity = math.normalize(new float3(velocity.x,0,velocity.z)) * boidSpeed;
+                    }
 
                     newBoidTransforms[entityInQueryIndex] = float4x4.TRS(
                         localToWorld.Position + velocity * deltaTime,
