@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25417a665452e414c807047d97ef6dfb, type: 3}
+  m_Name: WarcryShortSO
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: warcryShort1
+    clip: {fileID: 8300000, guid: 6176359e6e50f9442ba390a7440fa430, type: 3}
+    priority: 96
+    volume: 1
+    pitch: 1
+    loop: 0
+  - name: warcryShort2
+    clip: {fileID: 8300000, guid: 5d328884cd02df64ea457af511c533d3, type: 3}
+    priority: 96
+    volume: 1
+    pitch: 1
+    loop: 0
+  - name: warcryShort3
+    clip: {fileID: 8300000, guid: 8122c6f6914df3f409c31f9f799c6c36, type: 3}
+    priority: 96
+    volume: 1
+    pitch: 1
+    loop: 0
