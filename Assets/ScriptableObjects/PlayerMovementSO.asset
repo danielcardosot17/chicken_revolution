@@ -15,7 +15,7 @@ MonoBehaviour:
   groundedBufferTime: 0.3
   planeSpeed: 5
   turboSpeed: 15
-  turboBufferTime: 10
+  turboBufferTime: 60
   rotationSpeed: 0.3
   jumpHeight: 2
   gravity: 10

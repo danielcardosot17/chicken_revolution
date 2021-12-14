@@ -18,11 +18,15 @@ public class PlayerFollower : MonoBehaviour
     public GameEventSO stopCurrentAudio;
 
     private float timer = 0;
+    private float followTimer = 0;
+    private bool isShortScream = false;
     private bool isScreaming = false;
 
     private void Start() {
         flockStandby.Raise();
         timer = followDelay;
+        followTimer = timer;
+        isShortScream = false;
     }
 
     // Update is called once per frame
@@ -38,14 +42,28 @@ public class PlayerFollower : MonoBehaviour
                     if(((direction.magnitude - radius) / followSpeed) < followDelay)
                     {
                         warcryShort.Raise();
+                        isShortScream = true;
                     }
                     else
                     {
+                        isShortScream = false;
                         warcryLong.Raise();
                     }
                     isScreaming = true;
+                    followTimer = followDelay;
                 }
+                followTimer -= Time.deltaTime;
                 transform.position += direction.normalized * followSpeed * Time.deltaTime;
+                
+                if(followTimer <= 0)
+                {
+                    if(isShortScream)
+                    {
+                        stopCurrentAudio.Raise();
+                        isShortScream = false;
+                        warcryLong.Raise();
+                    }
+                }
             }
             else
             {
@@ -59,6 +77,7 @@ public class PlayerFollower : MonoBehaviour
                 StartCoroutine(DoAfterTimeCoroutine(followDelay, () => 
                 {
                     isScreaming = false;
+                    isShortScream = false;
                     stopCurrentAudio.Raise();
                     flockStandby.Raise();
                 }));
@@ -70,6 +89,7 @@ public class PlayerFollower : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position,radius);
+        Gizmos.DrawWireSphere(transform.position,radius + followDelay * followSpeed);
     }
 
     
